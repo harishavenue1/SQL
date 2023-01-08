@@ -145,7 +145,7 @@ SELECT
 from
     myrestaurant.employee;
 
---Add Column
+--Add Column [DDL]
 alter table
     myrestaurant.employee
 add
@@ -243,4 +243,102 @@ CREATE TABLE IF NOT EXISTS myrestaurant.order(
     CONSTRAINT pk PRIMARY KEY (order_id),
     CONSTRAINT fk foreign key (customer_id) references customer(cust_id)
 );
+
+--DQL
+SELECT
+    *
+from
+    myrestaurant.users;
+
+--alias
+SELECT
+    id,
+    name as fullName
+from
+    myrestaurant.users;
+
+--countRecords
+SELECT
+    Count(*) as totalRecords
+from
+    myrestaurant.users;
+
+--distinctValues
+SELECT
+    distinct (name) as distinctRecords
+from
+    myrestaurant.users;
+
+--CountOfDistinctRecords
+SELECT
+    count(distinct (name)) as CountOfDistinctRecords
+from
+    myrestaurant.users;
+
+--oldName and newName - using concat
+SELECT
+    name as oldName,
+    CONCAT(name, ' ', 'sir') as newName
+from
+    myrestaurant.users;
+
+--filter
+SELECT * from myrestaurant.users
+where password = 'root'
+
+--update
+update myrestaurant.users
+set phone = concat(phone,'','175651')
+where name = 'Harish'
+
+--cannot update when there is no column
+--Error: ER_BAD_FIELD_ERROR: Unknown column 'salary' in 'field list'
+update myrestaurant.users
+set salary = 1000
+
+--address update
+update myrestaurant.users
+set address = 'Bangalore,India'
+where address = 'Bangalore'
+
+--delete records
+delete from myrestaurant.users
+where name = 'Sakshi'
+
+delete from myrestaurant.users
+where name = 'Gaurav'
+
+insert into myrestaurant.users
+Values
+(2, 'B', 1234567891, 'Kerala,India', 'root'),
+(3, 'C', 1234567892, 'Mumbai,India', 'root'),
+(4, 'D', 1234567893, 'Hyderabad,India', 'root'),
+(5, 'E', 1234567894, 'Andhra,India', 'root'),
+(6, 'F', 1234567895, 'Delhi,India', 'root')
+
+--limit results to show
+SELECT * from myrestaurant.users limit 1;
+
+--arrange results by ordering [Order By]
+select * from myrestaurant.users order by name desc
+select * from myrestaurant.users order by address desc
+
+insert into myrestaurant.users
+Values
+(20, 'B1', 1234567891, 'Kerala,India', 'root'),
+(31, 'C1', 1234567892, 'Mumbai,India', 'root'),
+(41, 'D1', 1234567893, 'Hyderabad,India', 'root'),
+(51, 'E1', 1234567894, 'Andhra,India', 'root'),
+(61, 'F1', 1234567895, 'Delhi,India', 'root')
+
+--multiOrderBy
+select * from myrestaurant.users order by name asc, address desc
+
+--max of value without max keyword
+--below is correct if only 1 user having max
+select * from myrestaurant.users order by phone desc limit 1
+
+--incase of multiple users having max value
+--??
+
 
