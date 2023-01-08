@@ -1,0 +1,246 @@
+CREATE DATABASE myrestaurant;
+
+CREATE TABLE IF NOT EXISTS myrestaurant.users(
+    id INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL,
+    phone VARCHAR(200),
+    address VARCHAR(200),
+    password VARCHAR(200) NOT NULL
+);
+
+INSERT INTO
+    myrestaurant.users(name, phone, address, password)
+VALUES
+    ('Gaurav', '123456789', 'Mumbai,India', 'pass134'),
+    (
+        'Sakshi',
+        '987654321',
+        'Chennai,India',
+        'pass456'
+    );
+
+SELECT
+    *
+FROM
+    myrestaurant.users
+where
+    id = 2;
+
+SELECT
+    *
+FROM
+    myrestaurant.users
+where
+    id = 1;
+
+Insert INTO
+    myrestaurant.users
+VALUES
+    (21, 'Harish', '9738', 'Bangalore', 'root');
+
+SELECT
+    *
+FROM
+    myrestaurant.users
+where
+    id = 3;
+
+INSERT INTO
+    myrestaurant.users(name, phone, address, password)
+VALUES
+    ('Gaurav', '123456789', 'Mumbai,India', 'pass134'),
+    (
+        'Sakshi',
+        '987654321',
+        'Chennai,India',
+        'pass456'
+    );
+
+SELECT
+    distinct name
+from
+    myrestaurant.users;
+
+INSERT INTO
+    myrestaurant.users(name, phone, address, password)
+VALUES
+    ('Gaurav', '123456789', 'Mumbai,India', 'pass134');
+
+SELECT
+    Count(name)
+from
+    myrestaurant.users;
+
+use myrestaurant;
+
+CREATE TABLE IF NOT EXISTS employeeWithConstraints(
+    id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    salary DOUBLE,
+    hiring_date DATE DEFAULT '2023-01-01',
+    UNIQUE (id),
+    CHECK (salary > 1000)
+);
+
+insert INTO
+    employeeWithConstraints
+VALUES
+    (1, 'harish', 1001, '2022-01-01');
+
+insert INTO
+    employeeWithConstraints
+VALUES
+    (2, 'abc', 10000, '2022-02-02');
+
+SELECT
+    *
+from
+    employeeWithConstraints;
+
+insert INTO
+    employeeWithConstraints
+VALUES
+    (3, 'abc', 10000, '2022-02-06');
+
+insert INTO
+    employeeWithConstraints
+VALUES
+    (4, 'abc', 10000, null);
+
+--default when columnName not mentioned while inserting
+insert INTO
+    employeeWithConstraints(id, name, salary)
+VALUES
+    (5, 'abc', 10000);
+
+--option to modify using keyword CONSTRAINT
+CREATE TABLE IF NOT EXISTS employeeWithConstraints_tmp(
+    id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    salary DOUBLE,
+    hiring_date DATE DEFAULT '2023-01-01',
+    CONSTRAINT unique_id UNIQUE (id),
+    CONSTRAINT salary_check CHECK (salary > 1000)
+);
+
+insert INTO
+    employeeWithConstraints_tmp(id, name, salary)
+VALUES
+    (5, 'abc', 100);
+
+CREATE TABLE IF NOT EXISTS myrestaurant.employee(
+    id INT,
+    name VARCHAR(50),
+    address VARCHAR(50),
+    city VARCHAR(50)
+);
+
+insert INTO
+    myrestaurant.employee
+VALUES
+    (5, 'abc', "Blore1", "Blore");
+
+SELECT
+    *
+from
+    myrestaurant.employee;
+
+--Add Column
+alter table
+    myrestaurant.employee
+add
+    DOB date;
+
+SELECT
+    *
+from
+    myrestaurant.employee;
+
+--see table structure
+show create table myrestaurant.employee;
+
+--modify column type
+alter table
+    myrestaurant.employee
+modify
+    column name VARCHAR(100);
+
+--delete column
+alter table
+    myrestaurant.employee drop column city;
+
+--rename column
+alter table
+    myrestaurant.employee rename column fullName to empName;
+
+--truncate table -> removes data frm table, but not table structure
+truncate table myrestaurant.employee;
+
+--drop table -> removes table as well
+drop table myrestaurant.employee;
+
+CREATE TABLE IF NOT EXISTS myrestaurant.employee(
+    id INT,
+    name VARCHAR(50),
+    address VARCHAR(50),
+    city VARCHAR(50)
+);
+
+insert INTO
+    myrestaurant.employee
+VALUES
+    (1, 'abc', "Blore1", "Blore");
+
+SELECT
+    *
+from
+    myrestaurant.employee;
+
+--ADD Constraints through alter command
+alter table
+    myrestaurant.employee
+add
+    CONSTRAINT unique_id UNIQUE(id);
+
+--show table structure
+show CREATE TABLE myrestaurant.employee;
+
+--remove Constraints through alter command
+alter table
+    myrestaurant.employee drop CONSTRAINT unique_id;
+
+--PrimaryKey Constraint
+CREATE TABLE IF NOT EXISTS myrestaurant.persons(
+    id INT,
+    name VARCHAR(50),
+    age INT,
+    CONSTRAINT pk PRIMARY KEY (id)
+);
+
+insert INTO
+    myrestaurant.persons
+VALUES
+    (1, 'abc', 25);
+
+--PrimarKey cant take Null Values
+insert INTO
+    myrestaurant.persons
+VALUES
+    (null, 'abc', 25);
+
+--ForeignKey
+CREATE TABLE IF NOT EXISTS myrestaurant.customer(
+    cust_id INT,
+    name VARCHAR(50),
+    age INT,
+    CONSTRAINT pk PRIMARY KEY (cust_id)
+);
+
+CREATE TABLE IF NOT EXISTS myrestaurant.order(
+    order_id INT,
+    order_num INT,
+    customer_id INT,
+    CONSTRAINT pk PRIMARY KEY (order_id),
+    CONSTRAINT fk foreign key (customer_id) references customer(cust_id)
+);
+
